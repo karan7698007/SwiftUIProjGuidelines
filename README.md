@@ -383,6 +383,41 @@ let granted = await PermissionManager.shared.requestCamera()
 func fetchUser(id: String) async throws -> User
 ```
 
+### Project Structure Document
+
+A `PROJECT_STRUCTURE.md` file must be created at the **project root**. This file serves as the single reference point for understanding the entire project layout — for both team members and AI tools.
+
+It must include:
+
+- **Full folder structure** with a brief description of each folder's responsibility.
+- **Naming conventions** for files, types, and folders.
+- **Architecture overview** describing how MVVM layers interact.
+- **Key files** and their roles (e.g., router file, AppConstants, NetworkManager).
+- **Third-party dependencies** and why each is used.
+- **Environment/configuration** details (schemes, build configs, etc.).
+
+Example structure inside `PROJECT_STRUCTURE.md`:
+
+```
+ProjectName/
+├── App/                        # App entry point, lifecycle
+├── Core/
+│   ├── Network/                # Alamofire-based API client
+│   ├── Config/                 # AppColors, AppFonts, AppConstants
+│   ├── Router/                 # Centralized navigation routes
+│   ├── Managers/               # PermissionManager, AppLogger, etc.
+│   └── Extensions/             # Swift/SwiftUI extensions
+├── Components/                 # Reusable UI components (AppButton, AppTextField, etc.)
+├── Features/
+│   ├── Login/                  # LoginModel, LoginView, LoginViewModel
+│   ├── Home/                   # HomeModel, HomeView, HomeViewModel
+│   └── ...
+└── Resources/                  # Assets, fonts, localization files
+```
+
+- This file must be **kept up to date** whenever the project structure changes.
+- It must be **detailed enough** that a new developer or AI assistant can understand the full project layout without opening any source file.
+
 ---
 
 ## Data Passing Between Modules
