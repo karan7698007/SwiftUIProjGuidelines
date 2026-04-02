@@ -383,45 +383,81 @@ let granted = await PermissionManager.shared.requestCamera()
 func fetchUser(id: String) async throws -> User
 ```
 
-### Project Structure Document
+### Documentation Policy
 
-A **`PROJECT_STRUCTURE.md`** file must be created at the **project root**. This is the **only** `.md` file that should be created for documentation purposes (aside from this `README.md`). 
+**Do NOT create any `.md` files** for documentation purposes (aside from this `README.md`). No per-feature READMEs, no per-folder documentation files, no NETWORK.md, no CONFIG.md, no PROJECT_STRUCTURE.md, etc.
 
-**Do NOT create any other `.md` files** — no per-feature READMEs, no per-folder documentation files, no NETWORK.md, no CONFIG.md, etc. Everything must be documented in `PROJECT_STRUCTURE.md`.
+All documentation must be done through **code comments** (`///`) in the actual Swift files where needed.
 
-This file serves as the single reference point for understanding the entire project layout — for both team members and AI tools.
+### Project Folder Structure
 
-It must include:
-
-- **Full folder structure** with a brief description of each folder's responsibility.
-- **Naming conventions** for files, types, and folders.
-- **Architecture overview** describing how MVVM layers interact and how features communicate via Router and DataPasser.
-- **Key files** and their roles (e.g., router file, AppConstants, NetworkManager, UserData).
-- **Dependency flow** (Features → Components → Core → Resources).
-- **Third-party dependencies** and why each is used (Alamofire, SDWebImageSwiftUI).
-- **Environment/configuration** details (schemes, build configs, etc.).
-
-Example structure inside `PROJECT_STRUCTURE.md`:
+The project must follow this folder structure:
 
 ```
 ProjectName/
-├── App/                        # App entry point, lifecycle, @main struct
+├── App/
+│   ├── ProjectNameApp.swift           # @main entry point
+│   └── ContentView.swift              # Root view
 ├── Core/
-│   ├── Network/                # Alamofire-based API client, NetworkManager
-│   ├── Config/                 # AppColors, Font extension, AppConstants
-│   ├── Router/                 # Centralized navigation routes (AppRoute enum, Router class)
-│   ├── Managers/               # PermissionManager, AppLogger, UserData singleton
-│   └── Extensions/             # Swift/SwiftUI extensions
-├── Components/                 # Reusable UI components (AppButton, AppTextField, Loader, Alert, etc.)
+│   ├── Network/
+│   │   ├── NetworkManager.swift       # Alamofire-based API client
+│   │   ├── APIEndpoint.swift          # Endpoint definitions
+│   │   └── NetworkError.swift         # Custom network errors
+│   ├── Config/
+│   │   ├── AppColors.swift            # Color extension
+│   │   ├── AppFonts.swift             # Font extension with @ScaledMetric support
+│   │   └── AppConstants.swift         # All static constants
+│   ├── Router/
+│   │   ├── AppRoute.swift             # Route enum (Hashable)
+│   │   └── Router.swift               # Navigation router class
+│   ├── Managers/
+│   │   ├── PermissionManager.swift    # Centralized permission handling
+│   │   ├── AppLogger.swift            # Centralized logging
+│   │   └── UserData.swift             # UserDefaults singleton
+│   └── Extensions/
+│       ├── View+Extensions.swift
+│       ├── String+Extensions.swift
+│       └── ...
+├── Components/
+│   ├── AppButton.swift                # Reusable button
+│   ├── AppTextField.swift             # Reusable text field
+│   ├── AppTextEditor.swift            # Reusable text editor
+│   ├── AppText.swift                  # Reusable text
+│   ├── AppSegment.swift               # Reusable segment control
+│   ├── AppNavigationBar.swift         # Custom navigation bar
+│   ├── Loader.swift                   # Loading indicator
+│   ├── AlertView.swift                # Custom alert
+│   ├── EmptyStateView.swift           # Empty state
+│   └── ErrorView.swift                # Error state with retry
 ├── Features/
-│   ├── Login/                  # LoginModel.swift, LoginView.swift, LoginViewModel.swift
-│   ├── Home/                   # HomeModel.swift, HomeView.swift, HomeViewModel.swift
-│   └── ...
-└── Resources/                  # Assets.xcassets, custom fonts, Localizable.strings
+│   ├── Login/
+│   │   ├── LoginModel.swift           # Data models
+│   │   ├── LoginView.swift            # UI only
+│   │   └── LoginViewModel.swift       # Business logic
+│   ├── Home/
+│   │   ├── HomeModel.swift
+│   │   ├── HomeView.swift
+│   │   └── HomeViewModel.swift
+│   └── Profile/
+│       ├── ProfileModel.swift
+│       ├── ProfileView.swift
+│       └── ProfileViewModel.swift
+└── Resources/
+    ├── Assets.xcassets            # Images, colors
+    ├── Fonts/                     # Custom font files (.ttf, .otf)
+    └── Localizable.strings        # Localization
 ```
 
-- This file must be **kept up to date** whenever the project structure changes.
-- It must be **detailed enough** that a new developer or AI assistant can understand the full project layout without opening any source file.
+**Dependency Flow:**
+
+```
+Features → Components → Core → Resources
+```
+
+- Features can use Components and Core.
+- Components can use Core.
+- Core and Components must never import Features.
+- Each layer is independent and reusable.
 
 ---
 
