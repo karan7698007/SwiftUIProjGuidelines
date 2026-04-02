@@ -385,34 +385,39 @@ func fetchUser(id: String) async throws -> User
 
 ### Project Structure Document
 
-A `PROJECT_STRUCTURE.md` file must be created at the **project root**. This file serves as the single reference point for understanding the entire project layout — for both team members and AI tools.
+A **`PROJECT_STRUCTURE.md`** file must be created at the **project root**. This is the **only** `.md` file that should be created for documentation purposes (aside from this `README.md`). 
+
+**Do NOT create any other `.md` files** — no per-feature READMEs, no per-folder documentation files, no NETWORK.md, no CONFIG.md, etc. Everything must be documented in `PROJECT_STRUCTURE.md`.
+
+This file serves as the single reference point for understanding the entire project layout — for both team members and AI tools.
 
 It must include:
 
 - **Full folder structure** with a brief description of each folder's responsibility.
 - **Naming conventions** for files, types, and folders.
-- **Architecture overview** describing how MVVM layers interact.
-- **Key files** and their roles (e.g., router file, AppConstants, NetworkManager).
-- **Third-party dependencies** and why each is used.
+- **Architecture overview** describing how MVVM layers interact and how features communicate via Router and DataPasser.
+- **Key files** and their roles (e.g., router file, AppConstants, NetworkManager, UserData).
+- **Dependency flow** (Features → Components → Core → Resources).
+- **Third-party dependencies** and why each is used (Alamofire, SDWebImageSwiftUI).
 - **Environment/configuration** details (schemes, build configs, etc.).
 
 Example structure inside `PROJECT_STRUCTURE.md`:
 
 ```
 ProjectName/
-├── App/                        # App entry point, lifecycle
+├── App/                        # App entry point, lifecycle, @main struct
 ├── Core/
-│   ├── Network/                # Alamofire-based API client
-│   ├── Config/                 # AppColors, AppFonts, AppConstants
-│   ├── Router/                 # Centralized navigation routes
-│   ├── Managers/               # PermissionManager, AppLogger, etc.
+│   ├── Network/                # Alamofire-based API client, NetworkManager
+│   ├── Config/                 # AppColors, Font extension, AppConstants
+│   ├── Router/                 # Centralized navigation routes (AppRoute enum, Router class)
+│   ├── Managers/               # PermissionManager, AppLogger, UserData singleton
 │   └── Extensions/             # Swift/SwiftUI extensions
-├── Components/                 # Reusable UI components (AppButton, AppTextField, etc.)
+├── Components/                 # Reusable UI components (AppButton, AppTextField, Loader, Alert, etc.)
 ├── Features/
-│   ├── Login/                  # LoginModel, LoginView, LoginViewModel
-│   ├── Home/                   # HomeModel, HomeView, HomeViewModel
+│   ├── Login/                  # LoginModel.swift, LoginView.swift, LoginViewModel.swift
+│   ├── Home/                   # HomeModel.swift, HomeView.swift, HomeViewModel.swift
 │   └── ...
-└── Resources/                  # Assets, fonts, localization files
+└── Resources/                  # Assets.xcassets, custom fonts, Localizable.strings
 ```
 
 - This file must be **kept up to date** whenever the project structure changes.
